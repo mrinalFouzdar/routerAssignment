@@ -4,18 +4,26 @@ import { useParams } from 'react-router-dom'
 export default function ProductsDeatails() {
   const {id}=useParams();
   const [product,setProduct]=React.useState(null)
+  const [err,setErr]=React.useState(false)
   // console.log(id);
   React.useEffect(()=>{
     fetch(`http://localhost:3001/products/${id}`)
     .then((res)=>res.json())
     .then((res)=>{
       console.log(res);
-      setProduct(res)
+      if(Object.keys(res).length===0){
+        setErr(true)
+      }else{
+
+        setProduct(res)
+      }
     })
-    .catch((err)=>console.log(err))
-    .finally(setProduct(null))
+    .catch((err)=>{
+      console.log("errr12")
+      setErr(true)})
 
   },[])
+  console.log("err" , err)
   return product?(
     <div>
       <h1>Products Details</h1>
